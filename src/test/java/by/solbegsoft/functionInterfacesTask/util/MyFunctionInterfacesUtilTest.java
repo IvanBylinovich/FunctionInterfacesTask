@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.*;
 
 class MyFunctionInterfacesUtilTest {
 
