@@ -11,15 +11,14 @@ import java.util.function.UnaryOperator;
 
 public class StringsUtils {
 
-    static Predicate<String> predicateStringLength = (x) -> x.length() <= 5;
-
     public static boolean checkAndGetTrueIfAllStringsLengthMoreThan5(String... testStrings) {
-        if (testStrings == null || Arrays.stream(testStrings).anyMatch(Objects::isNull)) {
+        Predicate<String> predicateStringLength = (x) -> (x != null && x.length() > 5);
+        if (testStrings == null) {
             return false;
         }
 
         for (String testString : testStrings) {
-            if (predicateStringLength.test(testString)) {
+            if (!predicateStringLength.test(testString)) {
                 return false;
             }
         }
@@ -27,10 +26,7 @@ public class StringsUtils {
     }
 
     public static boolean checkAndGetTrueIfAllStringsLengthMoreThan5Implementation2(String... testStrings) {
-        if (testStrings == null || Arrays.stream(testStrings).anyMatch(Objects::isNull)) {
-            return false;
-        }
-        return Arrays.stream(testStrings).noneMatch(predicateStringLength);
+        return testStrings != null && Arrays.stream(testStrings).allMatch(x -> x != null && x.length() > 5);
     }
 
     public static boolean checkStringNotNullNotEmpty(String string) {
