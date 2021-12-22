@@ -1,24 +1,36 @@
 package by.solbegsoft.functionInterfacesTask.util;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
-
 import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.IntSupplier;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
 import java.util.function.UnaryOperator;
 
 public class StringsUtils {
-    static Predicate<String> predicateStringLength = (x) -> x.length() > 5;
+
+    static Predicate<String> predicateStringLength = (x) -> x.length() <= 5;
 
     public static boolean checkAndGetTrueIfAllStringsLengthMoreThan5(String... testStrings) {
-        if (testStrings == null) return false;
+        if (testStrings == null || Arrays.stream(testStrings).anyMatch(Objects::isNull)) {
+            return false;
+        }
+
         for (String testString : testStrings) {
-            if (testString == null) return false;
-            if (!predicateStringLength.test(testString)) return false;
+            if (predicateStringLength.test(testString)) {
+                return false;
+            }
         }
         return true;
+    }
+
+    public static boolean checkAndGetTrueIfAllStringsLengthMoreThan5Implementation2(String... testStrings) {
+        if (testStrings == null || Arrays.stream(testStrings).anyMatch(Objects::isNull)) {
+            return false;
+        }
+        return Arrays.stream(testStrings).noneMatch(predicateStringLength);
     }
 
     public static boolean checkStringNotNullNotEmpty(String string) {
@@ -38,12 +50,12 @@ public class StringsUtils {
     }
 
     public static int getStringLength(String string) {
-        Function<String, Integer> counter = java.lang.String::length;
-        return counter.apply(string);
+        ToIntFunction<String> counter = String::length;
+        return counter.applyAsInt(string);
     }
 
     public static int randomIntegerGenerator() {
-        Supplier<Integer> randomIntegerGenerator = () -> new Random().nextInt();
-        return randomIntegerGenerator.get();
+        IntSupplier randomIntegerGenerator = () -> new Random().nextInt();
+        return randomIntegerGenerator.getAsInt();
     }
 }
